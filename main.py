@@ -37,7 +37,13 @@ def init_db(): # Keep as sync for initialization
 init_db()
 
 @mcp.tool()
-async def add_expense(date,amount,category,subcategory="",note=""):
+async def add_expense(
+    date: str,
+    amount: float,
+    category: str,
+    subcategory: str = "",
+    note: str = ""
+) -> dict:
     """Add a new expense entry to the database"""
     try:
         async with aiosqlite.connect(db_path) as c:
@@ -54,7 +60,7 @@ async def add_expense(date,amount,category,subcategory="",note=""):
         return {"status": "error", "message": f"Database error: {str(e)}"}
 
 @mcp.tool()
-async def list_expenses(start_date,end_date):
+async def list_expenses(start_date: str,end_date: str) -> dict :
     """List expenses between start_date and end_date"""
     try:
         async with aiosqlite.connect(db_path) as c:
@@ -79,7 +85,7 @@ async def list_expenses(start_date,end_date):
         return {"status": "error", "message": f"Database error: {str(e)}"}
 
 @mcp.tool()
-async def summarize(start_date,end_date,category=None):
+async def summarize(start_date:str,end_date:str,category:str=None) -> dict:
     """Summarize expenses by category within an inclusive date range"""
     try:
         async with aiosqlite.connect(db_path) as c:
